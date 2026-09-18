@@ -1,10 +1,37 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { ArrowLeft, ArrowRight, Close, Plus } from "@/components/icons";
+import { useCallback, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, Close, Plus, Image as ImageIcon } from "@/components/icons";
 import { cx } from "@/components/ui";
 import { FieldLabel, inputClass } from "@/components/admin/admin-ui";
+import { ACCEPTED_IMAGE_TYPES, useUpload } from "@/components/admin/use-upload";
+
+/** Shared upload feedback shown under both field variants. */
+function UploadNotice({
+  busy,
+  progress,
+  error,
+}: {
+  busy: boolean;
+  progress: { done: number; total: number } | null;
+  error: string | null;
+}) {
+  if (busy) {
+    return (
+      <p className="mt-2 flex items-center gap-2 text-xs text-royal-700">
+        <span className="size-3 animate-spin rounded-full border-2 border-royal-700 border-t-transparent" />
+        {progress && progress.total > 1
+          ? `Uploading ${progress.done + 1} of ${progress.total}…`
+          : "Uploading…"}
+      </p>
+    );
+  }
+  if (error) {
+    return <p className="mt-2 text-xs text-rose-600">{error}</p>;
+  }
+  return null;
+}
 
 /**
  * Manages an ordered list of image paths. The first image becomes the hero
@@ -26,12 +53,19 @@ export function ImageField({
   const [images, setImages] = useState<string[]>(initial);
   const [url, setUrl] = useState("");
   const [picking, setPicking] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
 
   function add(value: string) {
     const trimmed = value.trim();
     if (!trimmed || images.includes(trimmed)) return;
     setImages([...images, trimmed]);
   }
+
+  const onUploaded = useCallback((urls: string[]) => {
+    setImages((current) => [...current, ...urls.filter((u) => !current.includes(u))]);
+  }, []);
+
+  const { busy, error, progress, dragging, upload, dropZone } = useUpload(onUploaded);
 
   function remove(index: number) {
     setImages(images.filter((_, i) => i !== index));
@@ -46,7 +80,13 @@ export function ImageField({
   }
 
   return (
-    <div>
+    <div
+      {...dropZone}
+      className={cx(
+        "rounded transition-colors",
+        dragging && "outline-2 outline-offset-4 outline-dashed outline-gold-500",
+      )}
+    >
       <FieldLabel hint="First image is the cover">{label}</FieldLabel>
 
       {/* Hidden values for the server action */}
@@ -101,10 +141,32 @@ export function ImageField({
       )}
 
       <div className="flex flex-wrap gap-2">
+        <input
+          ref={fileInput}
+          type="file"
+          accept={ACCEPTED_IMAGE_TYPES}
+          multiple
+          className="sr-only"
+          onChange={(event) => {
+            if (event.target.files?.length) void upload(event.target.files);
+            event.target.value = "";
+          }}
+        />
+
+        <button
+          type="button"
+          onClick={() => fileInput.current?.click()}
+          disabled={busy}
+          className="tap-target inline-flex items-center gap-2 bg-royal-700 px-4 py-2.5 text-[0.8125rem] font-semibold text-white transition-colors hover:bg-royal-800 active:opacity-80 disabled:opacity-60"
+        >
+          <ImageIcon className="size-4" />
+          {busy ? "Uploading…" : "Upload from device"}
+        </button>
+
         <button
           type="button"
           onClick={() => setPicking((value) => !value)}
-          className="inline-flex items-center gap-2 border border-sand-200 px-4 py-2.5 text-[0.8125rem] font-semibold text-navy-800 transition-colors hover:border-gold-400 hover:text-gold-600"
+          className="tap-target inline-flex items-center gap-2 border border-sand-200 px-4 py-2.5 text-[0.8125rem] font-semibold text-navy-800 transition-colors hover:border-gold-400 hover:text-gold-600 active:opacity-80"
         >
           <Plus className="size-4" />
           {picking ? "Close library" : "Choose from library"}
@@ -137,6 +199,13 @@ export function ImageField({
           </button>
         </div>
       </div>
+
+      <UploadNotice busy={busy} progress={progress} error={error} />
+
+      <p className="mt-2 text-xs text-slate-400">
+        Drag images straight onto this area, or upload from your device. JPG, PNG, WebP,
+        AVIF or GIF, up to 8MB each.
+      </p>
 
       {picking && (
         <div className="mt-4 max-h-80 overflow-y-auto border border-sand-200 bg-sand-50 p-3">
@@ -185,9 +254,22 @@ export function SingleImageField({
 }) {
   const [value, setValue] = useState(initial ?? "");
   const [picking, setPicking] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  const onUploaded = useCallback((urls: string[]) => {
+    if (urls[0]) setValue(urls[0]);
+  }, []);
+
+  const { busy, error, progress, dragging, upload, dropZone } = useUpload(onUploaded);
 
   return (
-    <div>
+    <div
+      {...dropZone}
+      className={cx(
+        "rounded transition-colors",
+        dragging && "outline-2 outline-offset-4 outline-dashed outline-gold-500",
+      )}
+    >
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
 
       <div className="flex gap-3">
@@ -206,15 +288,39 @@ export function SingleImageField({
             placeholder="/images/properties/example.jpeg"
             className={inputClass}
           />
-          <button
-            type="button"
-            onClick={() => setPicking((open) => !open)}
-            className="text-xs font-semibold text-royal-700 underline underline-offset-4 transition-colors hover:text-gold-600"
-          >
-            {picking ? "Close library" : "Choose from library"}
-          </button>
+          <div className="flex flex-wrap items-center gap-3">
+            <input
+              ref={fileInput}
+              type="file"
+              accept={ACCEPTED_IMAGE_TYPES}
+              className="sr-only"
+              onChange={(event) => {
+                if (event.target.files?.length) void upload(event.target.files);
+                event.target.value = "";
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => fileInput.current?.click()}
+              disabled={busy}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-royal-700 underline underline-offset-4 transition-colors hover:text-gold-600 disabled:opacity-60"
+            >
+              <ImageIcon className="size-3.5" />
+              {busy ? "Uploading…" : "Upload from device"}
+            </button>
+            <span className="text-xs text-slate-300">·</span>
+            <button
+              type="button"
+              onClick={() => setPicking((open) => !open)}
+              className="text-xs font-semibold text-royal-700 underline underline-offset-4 transition-colors hover:text-gold-600"
+            >
+              {picking ? "Close library" : "Choose from library"}
+            </button>
+          </div>
         </div>
       </div>
+
+      <UploadNotice busy={busy} progress={progress} error={error} />
 
       {picking && (
         <div className="mt-3 max-h-64 overflow-y-auto border border-sand-200 bg-sand-50 p-3">

@@ -6,3 +6,6 @@ out
 .DS_Store
 *.tsbuildinfo
 next-env.d.ts
+
+# Locally uploaded images (production uses Vercel Blob)
+public/images/uploads

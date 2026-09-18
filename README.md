@@ -62,6 +62,7 @@ Sign in to the dashboard at `/admin/login` with the `ADMIN_EMAIL` and
 | Social media links | `src/lib/site.ts` → `social` |
 | Headline statistics | `src/lib/site.ts` → `stats` |
 | Production URL | `NEXT_PUBLIC_SITE_URL` env var |
+| Image uploads | `BLOB_READ_WRITE_TOKEN` — add a Vercel Blob store |
 | Brand colours | `src/app/globals.css` → `@theme` |
 
 The WhatsApp number must be digits only in international format with no `+`,
@@ -144,7 +145,20 @@ Everything on the public site is editable from `/admin`:
 - **Enquiries** — read, reply by email or WhatsApp, add internal notes, archive
 - **Team** (owners only) — add colleagues, set roles, reset passwords
 
-Images can be picked from anything in `public/images`, or added by URL.
+Images can be uploaded from your device (drag-and-drop or file picker), picked
+from anything in `public/images`, or added by URL. Uploads accept JPG, PNG,
+WebP, AVIF and GIF up to 8MB.
+
+### Where uploads are stored
+
+Vercel's filesystem is read-only, so deployed uploads go to **Vercel Blob**.
+Add a Blob store under the project's **Storage** tab; Vercel injects
+`BLOB_READ_WRITE_TOKEN` automatically on the next deploy.
+
+Copy that same token into `.env.local` so local uploads go to the same place.
+Without it, uploads fall back to `public/images/uploads`, which only `next dev`
+serves — and because local and production share one Neon database, a locally
+uploaded image would be recorded as a URL that production cannot resolve.
 
 ## SEO
 

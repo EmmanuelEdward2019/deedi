@@ -128,6 +128,43 @@ body {
 .rail { scrollbar-width: none; -ms-overflow-style: none; }
 .rail::-webkit-scrollbar { display: none; }
 
+/* ============================================================
+   Touch behaviour
+   ============================================================ */
+
+/*
+  `touch-action: manipulation` removes the browser's wait for a possible
+  double-tap-to-zoom, which otherwise delays every tap by up to 300ms on
+  iOS Safari. The default grey tap highlight is replaced by the explicit
+  :active states below, which fire immediately on touch.
+*/
+:where(button, a[href], select, summary, [role="button"], input[type="submit"], input[type="button"]) {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Immediate feedback on press — hover never fires on touch devices. */
+@media (hover: none) {
+  :where(button, a[href], [role="button"]):active {
+    opacity: 0.65;
+    transition: opacity 60ms linear;
+  }
+}
+
+/* Comfortable targets on touch screens (Apple/Google minimum is 44px). */
+@media (pointer: coarse) {
+  :where(button, select, [role="button"], input[type="submit"]):not(.tap-auto),
+  a[href]:where(.tap-target) {
+    min-height: 44px;
+  }
+
+  /* Icon-only controls need width as well as height. */
+  :where(button, a[href]).tap-icon {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
 /* ---------- Focus ---------- */
 :where(a, button, input, textarea, select, [tabindex]):focus-visible {
   outline: 2px solid var(--color-gold-500);

@@ -163,7 +163,7 @@ export function SiteHeader() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="font-display block border-b border-white/5 py-3.5 text-2xl text-white transition-colors hover:text-gold-300"
+                    className="font-display tap-target flex items-center border-b border-white/5 py-3.5 text-2xl text-white transition-colors hover:text-gold-300 active:text-gold-300"
                   >
                     {item.label}
                   </Link>

@@ -142,7 +142,7 @@ const buttonTones: Record<ButtonTone, string> = {
 };
 
 const buttonBase =
-  "group inline-flex items-center justify-center gap-2.5 text-[0.8125rem] font-semibold uppercase tracking-[0.12em] transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-55";
+  "tap-target group inline-flex items-center justify-center gap-2.5 text-[0.8125rem] font-semibold tracking-[0.12em] uppercase transition-all duration-300 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-55";
 
 export function Button({
   children,

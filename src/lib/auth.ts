@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
@@ -120,10 +121,14 @@ export async function destroySession() {
   (await cookies()).delete(COOKIE);
 }
 
-export async function getSession(): Promise<Session | null> {
+/**
+ * Memoised per request: the layout, the page and any server action in the same
+ * render all share one verification instead of repeating it.
+ */
+export const getSession = cache(async (): Promise<Session | null> => {
   const token = (await cookies()).get(COOKIE)?.value;
   return token ? verifyToken(token) : null;
-}
+});
 
 /** Guards an admin route; redirects to the login screen when signed out. */
 export async function requireAdmin(returnTo = "/admin"): Promise<Session> {
@@ -143,16 +148,16 @@ export function hashPassword(password: string) {
  */
 export async function requireOwner(returnTo = "/admin"): Promise<Session> {
   const session = await requireAdmin(returnTo);
-  const rows = await sql<{ role: AdminRole }>`
-    SELECT role FROM admin_users WHERE id = ${session.sub} LIMIT 1
-  `;
-
-  if (rows[0]?.role !== "owner") redirect("/admin?denied=owner");
+  if ((await currentRole()) !== "owner") redirect("/admin?denied=owner");
   return { ...session, role: "owner" };
 }
 
-/** Current role straight from the database, for gating UI and actions. */
-export async function currentRole(): Promise<AdminRole | null> {
+/**
+ * Current role straight from the database, for gating UI and actions.
+ * Memoised per request — the dashboard layout and the page both need it, and
+ * each uncached call was a separate round trip to Neon.
+ */
+export const currentRole = cache(async (): Promise<AdminRole | null> => {
   const session = await getSession();
   if (!session) return null;
 
@@ -160,7 +165,7 @@ export async function currentRole(): Promise<AdminRole | null> {
     SELECT role FROM admin_users WHERE id = ${session.sub} LIMIT 1
   `;
   return rows[0]?.role ?? null;
-}
+});
 
 /** Checks a password against the stored hash for one account. */
 export async function passwordMatches(userId: number, password: string) {

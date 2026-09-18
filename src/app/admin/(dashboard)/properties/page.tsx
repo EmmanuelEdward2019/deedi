@@ -127,14 +127,14 @@ export default async function AdminPropertiesPage() {
                         href={`/properties/${property.slug}`}
                         target="_blank"
                         aria-label="View on site"
-                        className="border border-sand-200 p-2 text-slate-500 transition-colors hover:border-gold-400 hover:text-gold-600"
+                        className="tap-icon inline-flex items-center justify-center border border-sand-200 p-2 text-slate-500 transition-colors hover:border-gold-400 hover:text-gold-600"
                       >
                         <Eye className="size-4" />
                       </Link>
                       <Link
                         href={`/admin/properties/${property.id}`}
                         aria-label="Edit"
-                        className="border border-sand-200 p-2 text-slate-500 transition-colors hover:border-gold-400 hover:text-gold-600"
+                        className="tap-icon inline-flex items-center justify-center border border-sand-200 p-2 text-slate-500 transition-colors hover:border-gold-400 hover:text-gold-600"
                       >
                         <Pencil className="size-4" />
                       </Link>

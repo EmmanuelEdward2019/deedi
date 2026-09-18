@@ -5,7 +5,8 @@ import StarterKit from "@tiptap/starter-kit";
 import ImageExtension from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ACCEPTED_IMAGE_TYPES, useUpload } from "@/components/admin/use-upload";
 import { cx } from "@/components/ui";
 
 /* ------------------------------------------------------------------ */
@@ -131,6 +132,17 @@ const Glyph = {
 
 function Toolbar({ editor, library }: { editor: Editor; library: string[] }) {
   const [imageOpen, setImageOpen] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  const insertUploaded = useCallback(
+    (urls: string[]) => {
+      for (const src of urls) editor.chain().focus().setImage({ src }).run();
+      setImageOpen(false);
+    },
+    [editor],
+  );
+
+  const { busy, error, upload } = useUpload(insertUploaded);
 
   const setLink = useCallback(() => {
     const previous = editor.getAttributes("link").href as string | undefined;
@@ -250,6 +262,29 @@ function Toolbar({ editor, library }: { editor: Editor; library: string[] }) {
 
       {imageOpen && (
         <div className="border-t border-sand-200 bg-white p-3">
+          <div className="mb-3 flex flex-wrap items-center gap-3">
+            <input
+              ref={fileInput}
+              type="file"
+              accept={ACCEPTED_IMAGE_TYPES}
+              multiple
+              className="sr-only"
+              onChange={(event) => {
+                if (event.target.files?.length) void upload(event.target.files);
+                event.target.value = "";
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => fileInput.current?.click()}
+              disabled={busy}
+              className="inline-flex items-center gap-2 bg-royal-700 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-royal-800 disabled:opacity-60"
+            >
+              {busy ? "Uploading…" : "Upload from device"}
+            </button>
+            {error ? <span className="text-xs text-rose-600">{error}</span> : null}
+          </div>
+
           <div className="flex gap-2">
             <input
               type="url"

@@ -94,14 +94,14 @@ export default async function AdminArtPage() {
                     href={`/art/${artwork.slug}`}
                     target="_blank"
                     aria-label="View on site"
-                    className="border border-sand-200 p-1.5 text-slate-500 transition-colors hover:border-gold-400 hover:text-gold-600"
+                    className="tap-icon inline-flex items-center justify-center border border-sand-200 p-1.5 text-slate-500 transition-colors hover:border-gold-400 hover:text-gold-600"
                   >
                     <Eye className="size-3.5" />
                   </Link>
                   <Link
                     href={`/admin/art/${artwork.id}`}
                     aria-label="Edit"
-                    className="border border-sand-200 p-1.5 text-slate-500 transition-colors hover:border-gold-400 hover:text-gold-600"
+                    className="tap-icon inline-flex items-center justify-center border border-sand-200 p-1.5 text-slate-500 transition-colors hover:border-gold-400 hover:text-gold-600"
                   >
                     <Pencil className="size-3.5" />
                   </Link>
