@@ -1,12 +1,36 @@
 /** Single source of truth for brand, contact details and navigation. */
 
+const FALLBACK_URL = "https://deedi.co.uk";
+
+/**
+ * Normalises NEXT_PUBLIC_SITE_URL into an absolute origin.
+ *
+ * A bare domain ("deediltd.co.uk") is the easy mistake to make when filling in
+ * a hosting dashboard, and `new URL()` throws on it — which would otherwise
+ * fail the whole build. Assume https, drop any trailing slash, and fall back to
+ * the canonical domain if the value is unusable.
+ */
+function siteUrl() {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return FALLBACK_URL;
+
+  const withScheme = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+
+  try {
+    const parsed = new URL(withScheme);
+    return `${parsed.origin}${parsed.pathname.replace(/\/+$/, "")}`;
+  } catch {
+    return FALLBACK_URL;
+  }
+}
+
 export const site = {
   name: "Deedi Ltd",
   legalName: "Deedi Limited",
   tagline: "Property. Art. Lasting Value.",
   description:
     "Deedi Ltd manages, lets and sells residential property across Greater Manchester and the North West, and curates original art for the spaces people live and work in.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://deedi.co.uk",
+  url: siteUrl(),
   locale: "en_GB",
   currency: "GBP",
 
