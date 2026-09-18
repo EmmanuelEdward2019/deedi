@@ -30,12 +30,16 @@ export function WhatsAppButton() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <div className="fixed right-4 bottom-4 z-[70] flex flex-col items-end gap-3 sm:right-6 sm:bottom-6">
+    <div
+      className="pointer-events-none fixed right-4 bottom-4 z-[70] flex flex-col items-end gap-3 sm:right-6 sm:bottom-6"
+    >
       {/* Panel */}
       <div
         className={cx(
           "w-[min(20rem,calc(100vw-2rem))] origin-bottom-right overflow-hidden rounded-lg bg-white shadow-2xl ring-1 ring-navy-900/10 transition-all duration-300",
-          open ? "scale-100 opacity-100" : "pointer-events-none scale-90 opacity-0",
+          open
+            ? "pointer-events-auto scale-100 opacity-100"
+            : "pointer-events-none scale-90 opacity-0",
         )}
         role="dialog"
         aria-label="Chat with Deedi Ltd"
@@ -95,7 +99,7 @@ export function WhatsAppButton() {
         aria-label={open ? "Close live chat" : "Open live chat"}
         aria-expanded={open}
         className={cx(
-          "group relative flex items-center gap-3 rounded-full bg-[#25D366] py-3.5 pr-5 pl-4 text-white shadow-xl transition-all duration-500 hover:bg-[#1eb855] hover:shadow-2xl",
+          "group pointer-events-auto relative flex items-center gap-3 rounded-full bg-[#25D366] py-3.5 pr-5 pl-4 text-white shadow-xl transition-all duration-500 hover:bg-[#1eb855] hover:shadow-2xl",
           mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
         )}
       >

@@ -125,7 +125,8 @@ export function SiteHeader() {
       {/* Mobile drawer */}
       <div
         className={cx(
-          "fixed inset-0 z-[60] lg:hidden",
+          // Above the chat widget (z-70) so its launcher cannot sit over the drawer.
+          "fixed inset-0 z-[80] lg:hidden",
           open ? "pointer-events-auto" : "pointer-events-none",
         )}
         aria-hidden={!open}
