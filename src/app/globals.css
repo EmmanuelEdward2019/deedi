@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+/* ============================================================
+   DEEDI LTD — Design tokens
+   Royal blue primary · gold + yellow accents
+   ============================================================ */
+@theme {
+  --color-royal-50: #eef3ff;
+  --color-royal-100: #d9e4ff;
+  --color-royal-200: #b9cdff;
+  --color-royal-300: #8caeff;
+  --color-royal-400: #5b85f7;
+  --color-royal-500: #3760e6;
+  --color-royal-600: #2544c9;
+  --color-royal-700: #1e3aa0;
+  --color-royal-800: #16296f;
+  --color-royal-900: #0f1d4f;
+  --color-royal-950: #081233;
+
+  --color-navy-700: #122a5c;
+  --color-navy-800: #0c1d42;
+  --color-navy-900: #08142f;
+  --color-navy-950: #050d1f;
+
+  --color-gold-300: #eddba0;
+  --color-gold-400: #dcc274;
+  --color-gold-500: #c9a227;
+  --color-gold-600: #ad8819;
+  --color-gold-700: #8a6c14;
+
+  --color-sunlight-400: #ffd447;
+  --color-sunlight-500: #ffc72c;
+  --color-sunlight-600: #e0a800;
+
+  --color-sand-50: #faf8f4;
+  --color-sand-100: #f3eee5;
+  --color-sand-200: #e6ddcd;
+
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-lift: 0 18px 40px -18px rgb(8 20 47 / 0.35);
+  --shadow-card: 0 2px 8px -2px rgb(8 20 47 / 0.08), 0 12px 32px -12px rgb(8 20 47 / 0.18);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --header-h: 84px;
+  color-scheme: light;
+}
+
+* { border-color: var(--color-sand-200); }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  background: #ffffff;
+  color: var(--color-navy-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--color-gold-500); color: #fff; }
+
+/* ---------- Typography helpers ---------- */
+.font-display { font-family: var(--font-display); }
+
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.balance { text-wrap: balance; }
+.pretty { text-wrap: pretty; }
+
+/* Gold rule used under section eyebrows */
+.rule-gold::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 2px;
+  margin-top: 0.75rem;
+  background: linear-gradient(90deg, var(--color-gold-500), var(--color-sunlight-500));
+}
+.rule-gold-center::after { margin-inline: auto; }
+
+/* ---------- Surfaces ---------- */
+.surface-navy {
+  background:
+    radial-gradient(1200px 600px at 12% -10%, rgb(30 58 160 / 0.55), transparent 60%),
+    linear-gradient(160deg, var(--color-navy-800), var(--color-navy-950));
+  color: #fff;
+}
+
+.hairline-gold {
+  background: linear-gradient(90deg, transparent, var(--color-gold-500) 22%, var(--color-sunlight-500) 50%, var(--color-gold-500) 78%, transparent);
+}
+
+/* ---------- Image treatments ---------- */
+.img-zoom img {
+  transition: transform 900ms var(--ease-out-soft), filter 600ms var(--ease-out-soft);
+}
+.img-zoom:hover img { transform: scale(1.06); }
+
+.scrim {
+  background: linear-gradient(to top, rgb(5 13 31 / 0.92) 0%, rgb(5 13 31 / 0.55) 38%, rgb(5 13 31 / 0.05) 72%, transparent 100%);
+}
+.scrim-soft {
+  background: linear-gradient(to top, rgb(5 13 31 / 0.8) 0%, rgb(5 13 31 / 0.25) 50%, transparent 100%);
+}
+
+/* ---------- Reveal on scroll ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 800ms var(--ease-out-soft), transform 800ms var(--ease-out-soft);
+  }
+  .reveal.is-visible { opacity: 1; transform: none; }
+}
+
+/* ---------- Scrollbar for horizontal rails ---------- */
+.rail { scrollbar-width: none; -ms-overflow-style: none; }
+.rail::-webkit-scrollbar { display: none; }
+
+/* ---------- Focus ---------- */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-gold-500);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   Rich text — renders TipTap/WordPress editor output
+   ============================================================ */
+.prose-deedi { color: #24324d; font-size: 1.0625rem; line-height: 1.8; }
+.prose-deedi > * + * { margin-top: 1.25em; }
+.prose-deedi h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--color-navy-900);
+  margin-top: 2.25em;
+  letter-spacing: -0.01em;
+}
+.prose-deedi h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  font-weight: 600;
+  color: var(--color-navy-900);
+  margin-top: 1.9em;
+}
+.prose-deedi h4 { font-weight: 700; color: var(--color-navy-900); margin-top: 1.6em; }
+.prose-deedi p { margin-bottom: 0; }
+.prose-deedi a {
+  color: var(--color-royal-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--color-gold-400);
+  font-weight: 500;
+}
+.prose-deedi a:hover { color: var(--color-gold-600); }
+.prose-deedi strong { color: var(--color-navy-900); font-weight: 650; }
+.prose-deedi ul, .prose-deedi ol { padding-left: 1.4em; }
+.prose-deedi ul { list-style: disc; }
+.prose-deedi ol { list-style: decimal; }
+.prose-deedi li { margin-top: 0.5em; }
+.prose-deedi li::marker { color: var(--color-gold-500); }
+.prose-deedi blockquote {
+  border-left: 3px solid var(--color-gold-500);
+  padding: 0.25rem 0 0.25rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--color-navy-800);
+}
+.prose-deedi img { border-radius: 4px; width: 100%; height: auto; }
+.prose-deedi figure figcaption { font-size: 0.8125rem; color: #64748b; margin-top: 0.6em; }
+.prose-deedi hr { border: 0; height: 1px; background: var(--color-sand-200); margin: 2.5em 0; }
+.prose-deedi code {
+  background: var(--color-sand-100);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+.prose-deedi pre {
+  background: var(--color-navy-900);
+  color: #e2e8f0;
+  padding: 1.25rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.875rem;
+}
+.prose-deedi pre code { background: none; padding: 0; }
+.prose-deedi table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.prose-deedi th, .prose-deedi td { border: 1px solid var(--color-sand-200); padding: 0.6rem 0.8rem; text-align: left; }
+.prose-deedi th { background: var(--color-sand-50); font-weight: 600; }
+
+/* ============================================================
+   Editor chrome (WordPress classic styling)
+   ============================================================ */
+.wp-editor .ProseMirror {
+  min-height: 460px;
+  padding: 2rem 2.25rem;
+  outline: none;
+  background: #fff;
+}
+.wp-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #94a3b8;
+  pointer-events: none;
+  height: 0;
+}
+.wp-editor .ProseMirror img.ProseMirror-selectednode { outline: 3px solid var(--color-royal-500); }
