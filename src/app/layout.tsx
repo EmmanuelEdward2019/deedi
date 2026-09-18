@@ -1,19 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import { RevealProvider } from "@/components/reveal";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
+/*
+  Fonts are self-hosted rather than fetched from Google at build time: it keeps
+  builds reproducible and offline-capable, removes a third-party request for
+  visitors, and avoids a build failure whenever fonts.googleapis.com hiccups.
+
+  Both files are variable (the full weight axis in one file) and carry the latin
+  subset, which covers every character this site renders. Symbols such as arrows
+  fall back to a system font, exactly as they did when served by Google, whose
+  Inter subsets do not include them either.
+*/
+const inter = localFont({
+  src: [{ path: "./fonts/inter-latin.woff2", weight: "100 900", style: "normal" }],
   variable: "--font-inter",
   display: "swap",
+  adjustFontFallback: "Arial",
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Helvetica Neue", "sans-serif"],
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
+const playfair = localFont({
+  src: [{ path: "./fonts/playfair-display-latin.woff2", weight: "400 900", style: "normal" }],
   variable: "--font-playfair",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
+  fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
 export const metadata: Metadata = {

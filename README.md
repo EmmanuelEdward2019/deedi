@@ -160,6 +160,19 @@ Without it, uploads fall back to `public/images/uploads`, which only `next dev`
 serves — and because local and production share one Neon database, a locally
 uploaded image would be recorded as a URL that production cannot resolve.
 
+## Fonts
+
+Inter and Playfair Display are **self-hosted** from `src/app/fonts` as variable
+woff2 files (latin subset, ~86KB total), loaded with `next/font/local`.
+
+Nothing is fetched from Google at build or at runtime, so builds are
+reproducible and work offline, a Google Fonts outage cannot fail a deploy, and
+no visitor data reaches a third party. Metric-matched fallbacks (`size-adjust`,
+`ascent-override`) prevent layout shift before the webfont loads.
+
+To change a weight range or add a subset, replace the woff2 files and update
+the `localFont` calls in `src/app/layout.tsx`.
+
 ## SEO
 
 - Per-page `metadata` with canonical URLs, Open Graph and Twitter cards
