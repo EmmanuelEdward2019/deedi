@@ -150,7 +150,8 @@ export const properties = [
 <p>Within catchment for Bolton School and Clarendon Primary, both rated Outstanding at their most recent inspection.</p>`,
     listing_type: "sale",
     status: "available",
-    price: 545000,
+    // Client instruction (call of 20 Sep): asking price down from £545,000.
+    price: 150000,
     price_qualifier: "Asking price",
     rent_period: null,
     bedrooms: 4,
@@ -235,8 +236,8 @@ export const properties = [
     slug: "victoria-square-investment-block-bolton",
     title: "Victoria Square Investment Block",
     summary:
-      "A fully tenanted mixed-use block of six flats and two retail units, producing £96,000 gross per annum.",
-    description: `<p>A rare opportunity to acquire a complete mixed-use building in the heart of Bolton, arranged as two ground-floor retail units with six self-contained one- and two-bedroom flats on the upper floors.</p>
+      "Our total investment portfolio in the Victoria Square area — six flats and two retail units, fully tenanted, producing £96,000 gross per annum.",
+    description: `<p>This is the whole of our property investment portfolio in the Victoria Square area, offered as one lot rather than a single building — two ground-floor retail units with six self-contained one- and two-bedroom flats on the upper floors.</p>
 <p>The building is fully let and income-producing, with the retail units on unexpired terms of four and seven years to established covenants, and the residential units let on assured shorthold tenancies with a rolling schedule of renewals.</p>
 <h3>Financials</h3>
 <p>Gross income of £96,000 per annum against an asking price of £1,150,000 — a gross yield of 8.3%. Full tenancy schedule, service charge budget and compliance documentation available on request to qualified parties.</p>
@@ -261,13 +262,15 @@ export const properties = [
     latitude: 53.5785,
     longitude: -2.4295,
     features: [
+      "Total portfolio for the area",
       "Fully let — £96,000 gross pa",
       "8.3% gross yield",
       "Six flats, two retail units",
       "Established retail covenants",
       "Management can be retained",
-      "Town centre freehold",
     ],
+    // TODO(client): the client says this aerial is actually Bury, not Bolton —
+    // confirm whether to relabel the listing or replace the photograph.
     hero_image: "/images/properties/bolton-aerial.jpeg",
     images: [
       "/images/properties/bolton-aerial.jpeg",

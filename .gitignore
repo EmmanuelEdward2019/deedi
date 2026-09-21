@@ -9,3 +9,10 @@ next-env.d.ts
 
 # Locally uploaded images (production uses Vercel Blob)
 public/images/uploads
+
+# Client call recordings — kept locally, never pushed
+*.m4a
+*.m4a.mp4
+*.mp3
+*.wav
+*.aac

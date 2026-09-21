@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { footerNav, site, whatsappLink } from "@/lib/site";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { TrustpilotWidget } from "@/components/trustpilot";
 import {
   Clock,
   Facebook,
@@ -145,6 +146,7 @@ export function SiteFooter() {
                 </a>
               ))}
             </div>
+            <TrustpilotWidget variant="collector" theme="dark" className="mt-8" />
           </div>
         </div>
       </div>

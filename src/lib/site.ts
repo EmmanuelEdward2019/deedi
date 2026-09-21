@@ -62,6 +62,18 @@ export const site = {
     x: "https://x.com/deediltd",
   },
 
+  /**
+   * Trustpilot TrustBox widgets. Both values come from Trustpilot Business →
+   * Integrations → TrustBox. Until the business unit ID is set, no widget —
+   * and no Trustpilot script — is rendered anywhere on the site.
+   */
+  trustpilot: {
+    businessUnitId: process.env.NEXT_PUBLIC_TRUSTPILOT_BUSINESS_UNIT_ID?.trim() ?? "",
+    reviewUrl: `https://uk.trustpilot.com/review/${
+      process.env.NEXT_PUBLIC_TRUSTPILOT_DOMAIN?.trim() || "deedi.co.uk"
+    }`,
+  },
+
   stats: [
     { value: "450+", label: "Properties under management" },
     { value: "18", label: "Years in the North West" },

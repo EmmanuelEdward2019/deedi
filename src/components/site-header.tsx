@@ -37,7 +37,7 @@ export function SiteHeader() {
         <div className="mx-auto flex max-w-[1560px] items-center justify-between px-8 py-2 text-[0.75rem]">
           <p className="tracking-wide">
             Property management, sales and lettings · Original art and interiors ·{" "}
-            <span className="text-gold-300">Bolton &amp; Greater Manchester</span>
+            <span className="text-gold-300">Manchester, Liverpool &amp; England</span>
           </p>
           <div className="flex items-center gap-6">
             <a href={site.contact.phoneHref} className="flex items-center gap-2 transition-colors hover:text-gold-300">

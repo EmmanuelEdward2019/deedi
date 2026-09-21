@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { PropertyCard } from "@/components/property-card";
 import { ArtCard } from "@/components/art-card";
 import { PropertySearch } from "@/components/property-search";
+import { TrustpilotWidget } from "@/components/trustpilot";
 import {
   ButtonLink,
   Container,
@@ -21,7 +22,6 @@ import {
   Key,
   Palette,
   Quote,
-  Shield,
   Sparkle,
   Users,
 } from "@/components/icons";
@@ -42,26 +42,108 @@ export const metadata: Metadata = {
 
 export const revalidate = 300;
 
+/**
+ * The three strands under the hero title, set as a divided rule — the client's
+ * replacements for the sample's "Expertise / Value / Long-term Growth".
+ */
+const HERO_STRANDS = [
+  "Property Sales & Rents",
+  "Asset & Project Management",
+  "Art Sales & Interior Decorations",
+];
+
 const PILLARS = [
   {
     Icon: HomeIcon,
     title: "Property Management",
-    copy: "Full management, compliance and tenant care across 450 homes.",
+    copy: "Maximising your property's potential.",
   },
   {
     Icon: Chart,
     title: "Investment Portfolio",
-    copy: "Sourcing, appraisal and acquisition built on real yield data.",
+    copy: "Strategic opportunities for lasting returns.",
+  },
+  {
+    Icon: Building,
+    title: "Project & Asset Management",
+    copy: "Refurbishment, compliance and asset planning.",
   },
   {
     Icon: Palette,
-    title: "Original Art",
-    copy: "Commissioned and collected work, framed and installed.",
+    title: "Art & Interior Decoration",
+    copy: "Original work, framing and interior styling.",
+  },
+];
+
+/**
+ * The two city panels that sit beside the pillars. Imagery is taken from the
+ * client's approved sample, not photographs of particular listings.
+ */
+const CITIES = [
+  {
+    name: "Manchester",
+    tagline: "Modern Living. Stronger Returns.",
+    image: "/images/home/manchester-waterside.jpeg",
+    href: "/properties?city=Manchester",
   },
   {
-    Icon: Shield,
-    title: "Local Expertise",
-    copy: "Eighteen years in Bolton, Salford and Greater Manchester.",
+    name: "Liverpool",
+    tagline: "A City of Opportunity.",
+    image: "/images/home/liverpool-waterfront.jpeg",
+    href: "/properties?city=Liverpool",
+  },
+];
+
+/**
+ * The three captioned images below the city panels.
+ *
+ * The sample's middle panel used a stock photograph of agents mid-handshake.
+ * We have no such photography, and inventing it would put people on the site
+ * who do not work here — so this band leads on the work itself instead.
+ */
+const DISCIPLINES = [
+  {
+    title: "Quality Art",
+    copy: "Original work. Framed, delivered and hung.",
+    image: "/images/art/still-waters-classic.jpeg",
+    href: "/art",
+  },
+  {
+    title: "Professional Management",
+    copy: "Peace of mind for property owners and tenants.",
+    image: "/images/home/canal-apartments.jpeg",
+    href: "/services#management",
+  },
+  {
+    // TODO(client): swap for the painting / decorating photography being sent over.
+    title: "Interior Decoration & Works",
+    copy: "Refurbishment, painting and interior decor.",
+    image: "/images/home/interior-living-room.jpeg",
+    href: "/services#interiors",
+  },
+];
+
+/** The four portfolio tiles — Manchester and Liverpool, alternating. */
+const PORTFOLIO_CITIES = [
+  {
+    city: "Manchester",
+    area: "City Centre & Ancoats",
+    image: "/images/home/manchester-city-centre.jpeg",
+  },
+  {
+    city: "Liverpool",
+    area: "City Centre & Waterfront",
+    image: "/images/home/liverpool-three-graces.jpeg",
+  },
+  {
+    city: "Manchester",
+    area: "Castlefield & Salford Quays",
+    image: "/images/home/manchester-castlefield.jpeg",
+  },
+  {
+    city: "Liverpool",
+    area: "Baltic Triangle & Beyond",
+    image: "/images/home/liverpool-baltic-triangle.jpeg",
   },
 ];
 
@@ -115,121 +197,204 @@ export default async function HomePage() {
   return (
     <>
       {/* ============================== HERO ============================== */}
-      <section className="relative min-h-[88vh] overflow-hidden bg-navy-950 lg:min-h-[92vh]">
+      <section className="relative isolate overflow-hidden bg-navy-950">
+        {/*
+          A 3.6:1 panorama — Manchester's towers on the left, Liverpool's
+          waterfront on the right. Narrow screens can only show a slice of it,
+          so they anchor on the Liver Building rather than the empty centre.
+        */}
         <Image
-          src="/images/properties/bolton-aerial.jpeg"
-          alt="Bolton town centre from above"
+          src="/images/home/hero-manchester-liverpool.jpeg"
+          alt="Manchester skyline and the Liverpool waterfront at sunset"
           fill
           priority
           sizes="100vw"
-          className="object-cover opacity-70"
+          className="object-cover object-[80%_center] lg:object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/85 via-navy-950/55 to-navy-950/92" />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/85 via-transparent to-transparent" />
+        {/* Lighter than a full scrim so the sunset keeps its colour. */}
+        <div className="absolute inset-0 bg-navy-950/45 lg:bg-transparent lg:bg-gradient-to-b lg:from-navy-950/25 lg:via-navy-950/5 lg:to-navy-950/35" />
+        <div className="absolute inset-0 hidden bg-[radial-gradient(ellipse_40%_62%_at_center,rgb(5_13_31/0.5),transparent)] lg:block" />
 
-        <Container className="relative flex min-h-[88vh] flex-col justify-center py-28 lg:min-h-[92vh]">
-          <div className="max-w-3xl">
-            <Eyebrow tone="white" className="flex items-center gap-3">
-              Bolton <span className="text-gold-500/50">|</span> Salford{" "}
-              <span className="text-gold-500/50">|</span> Manchester
-            </Eyebrow>
+        {/*
+          Short on desktop so both skylines stay in frame, as in the sample;
+          taller on mobile, where the search band below must clear the fixed
+          WhatsApp button.
+        */}
+        <Container className="relative flex min-h-[66vh] flex-col items-center justify-center py-20 text-center lg:min-h-[28rem] lg:py-12">
+          <Eyebrow tone="white" className="flex items-center gap-3">
+            Manchester <span className="text-gold-500/60">|</span> Liverpool{" "}
+            <span className="text-gold-500/60">|</span> England
+          </Eyebrow>
 
-            <h1 className="font-display mt-6 text-[2.75rem] leading-[1.05] font-medium tracking-[-0.02em] text-white balance sm:text-6xl lg:text-7xl">
-              Property &amp; Art
-              <span className="block text-gold-400">for the North West.</span>
-            </h1>
+          <h1 className="font-display mt-5 max-w-4xl text-[2.5rem] leading-[1.08] font-medium tracking-[-0.02em] text-white balance [text-shadow:0_2px_24px_rgb(5_13_31/0.45)] sm:text-6xl">
+            Property and Investment
+            <span className="block">Management Portfolio</span>
+          </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/75 pretty">
-              We manage, let and sell homes across Greater Manchester — and place original
-              art in the spaces people actually live in.
-            </p>
+          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.6875rem] font-semibold tracking-[0.2em] text-white/90 uppercase sm:text-xs">
+            {HERO_STRANDS.map((strand, index) => (
+              <li key={strand} className="flex items-center gap-4">
+                {/* Separator only once the strands sit on one line. */}
+                {index > 0 ? <span className="hidden text-gold-500/60 sm:inline">/</span> : null}
+                {strand}
+              </li>
+            ))}
+          </ul>
 
-            <div className="mt-9 flex flex-wrap gap-3">
-              <ButtonLink href="/properties" tone="gold" size="lg" arrow>
-                Browse properties
-              </ButtonLink>
-              <ButtonLink href="/art" tone="outlineLight" size="lg">
-                View art collection
-              </ButtonLink>
-            </div>
-          </div>
+          <p className="mt-6 max-w-xl text-[0.9375rem] leading-relaxed text-white/80 pretty sm:text-base">
+            Premium property management and investment opportunities in Manchester and
+            Liverpool — alongside original art for the spaces people live and work in.
+          </p>
 
-          <div className="mt-14 max-w-4xl">
-            <PropertySearch cities={facets.cities} />
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <ButtonLink href="/properties" tone="gold" arrow>
+              View our properties
+            </ButtonLink>
+            <ButtonLink href="/art" tone="outlineLight">
+              View art collection
+            </ButtonLink>
           </div>
         </Container>
       </section>
 
-      {/* ============================ PILLARS ============================= */}
+      {/* ---- search: kept from the previous homepage, slimmed to a band ---- */}
+      <section className="border-b border-sand-200 bg-sand-50 py-6">
+        <Container>
+          <PropertySearch cities={facets.cities} />
+        </Container>
+      </section>
+
+      {/* ==================== PILLARS + CITY PANELS ====================== */}
+      {/* Sample fuses a dark four-icon panel to two city images on one row. */}
       <section className="surface-navy relative">
         <GoldRule />
-        <Container>
-          <div className="grid divide-y divide-white/10 md:grid-cols-2 md:divide-y-0 lg:grid-cols-4 lg:divide-x">
+        <div className="grid lg:grid-cols-[minmax(0,46%)_minmax(0,1fr)]">
+          <div className="grid grid-cols-2 gap-px bg-white/10 lg:grid-cols-4">
             {PILLARS.map(({ Icon, title, copy }) => (
-              <div key={title} className="reveal px-2 py-10 text-center lg:px-8">
+              <div key={title} className="reveal bg-navy-900 px-4 py-10 text-center lg:px-5 lg:py-14">
                 <Icon className="mx-auto size-8 text-gold-400" strokeWidth={1.2} />
-                <h3 className="mt-5 text-[0.8125rem] font-semibold tracking-[0.16em] text-white uppercase">
+                <h3 className="mt-5 text-[0.6875rem] leading-snug font-semibold tracking-[0.14em] text-white uppercase">
                   {title}
                 </h3>
-                <p className="mx-auto mt-3 max-w-[22ch] text-sm leading-relaxed text-white/55">{copy}</p>
+                <p className="mx-auto mt-3 max-w-[20ch] text-[0.8125rem] leading-relaxed text-white/55">
+                  {copy}
+                </p>
               </div>
             ))}
           </div>
-        </Container>
+
+          <div className="grid sm:grid-cols-2">
+            {CITIES.map((city) => (
+              <Link
+                key={city.name}
+                href={city.href}
+                className="img-zoom group relative flex min-h-[15rem] items-end overflow-hidden lg:min-h-[19rem]"
+              >
+                <Image
+                  src={city.image}
+                  alt={city.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 27vw"
+                  className="object-cover"
+                />
+                <div className="scrim absolute inset-0" />
+                <div className="relative p-6 lg:p-8">
+                  <h3 className="text-sm font-semibold tracking-[0.14em] text-white uppercase">
+                    {city.name}
+                  </h3>
+                  <p className="mt-1.5 text-[0.8125rem] text-white/75">{city.tagline}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* ========================= TWO DISCIPLINES ======================== */}
-      <Section tone="light" className="py-0 sm:py-0 lg:py-0">
-        <div className="grid lg:grid-cols-2">
-          {[
-            {
-              href: "/properties",
-              image: "/images/properties/new-build-townhouses.jpeg",
-              eyebrow: "Division one",
-              title: "Property",
-              copy: "Management, lettings, sales and investment across Greater Manchester.",
-              cta: "Explore property",
-            },
-            {
-              href: "/art",
-              image: "/images/art/lion-relief.jpeg",
-              eyebrow: "Division two",
-              title: "Art",
-              copy: "Original works, limited editions and commissions, framed and installed.",
-              cta: "Explore art",
-            },
-          ].map((panel) => (
-            <Link
-              key={panel.href}
-              href={panel.href}
-              className="img-zoom group relative flex min-h-[26rem] items-end overflow-hidden lg:min-h-[34rem]"
-            >
-              <Image
-                src={panel.image}
-                alt={panel.title}
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-              <div className="scrim absolute inset-0" />
-              <div className="relative w-full p-8 lg:p-12">
-                <Eyebrow tone="white">{panel.eyebrow}</Eyebrow>
-                <h2 className="font-display mt-3 text-4xl text-white lg:text-5xl">{panel.title}</h2>
-                <p className="mt-3 max-w-sm text-[0.9375rem] leading-relaxed text-white/70">{panel.copy}</p>
-                <span className="mt-6 inline-flex items-center gap-2 border-b border-gold-400/50 pb-1 text-[0.75rem] font-semibold tracking-[0.14em] text-gold-300 uppercase transition-colors group-hover:border-gold-400 group-hover:text-white">
-                  {panel.cta}
-                </span>
+      {/* ======================= DISCIPLINES BAND ======================== */}
+      <section className="grid sm:grid-cols-2 lg:grid-cols-3">
+        {DISCIPLINES.map((panel) => (
+          <Link
+            key={panel.title}
+            href={panel.href}
+            className="img-zoom group relative flex min-h-[15rem] items-end overflow-hidden lg:min-h-[17rem]"
+          >
+            <Image
+              src={panel.image}
+              alt={panel.title}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover"
+            />
+            <div className="scrim absolute inset-0" />
+            <div className="relative p-6 lg:p-8">
+              <h3 className="text-sm font-semibold tracking-[0.14em] text-white uppercase">
+                {panel.title}
+              </h3>
+              <p className="mt-1.5 max-w-[34ch] text-[0.8125rem] leading-relaxed text-white/75">
+                {panel.copy}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </section>
+
+      {/* ====================== INVEST IN ICONIC CITIES =================== */}
+      <Section tone="light">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,22%)_minmax(0,1fr)] lg:items-center lg:gap-12">
+            <div className="reveal">
+              <Eyebrow>Our portfolio</Eyebrow>
+              <h2 className="font-display mt-4 text-4xl leading-[1.1] font-medium tracking-[-0.015em] text-navy-900 balance lg:text-[2.75rem]">
+                Invest in
+                <span className="block">Iconic Cities</span>
+              </h2>
+              <p className="mt-4 text-[0.9375rem] leading-relaxed text-slate-600 pretty">
+                From stylish city apartments to high-yield investment opportunities, our
+                portfolio spans the best of Manchester and Liverpool.
+              </p>
+              <p className="mt-3 text-[0.6875rem] font-semibold tracking-[0.18em] text-gold-600 uppercase">
+                England · United Kingdom
+              </p>
+              <div className="mt-7">
+                <ButtonLink href="/properties" tone="gold" arrow>
+                  View our properties
+                </ButtonLink>
               </div>
-            </Link>
-          ))}
-        </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {PORTFOLIO_CITIES.map((tile) => (
+                <Link
+                  key={`${tile.city}-${tile.area}`}
+                  href={`/properties?city=${encodeURIComponent(tile.city)}`}
+                  className="img-zoom reveal group relative flex aspect-[4/3] items-end overflow-hidden"
+                >
+                  <Image
+                    src={tile.image}
+                    alt={`${tile.city} — ${tile.area}`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                    className="object-cover"
+                  />
+                  <div className="scrim absolute inset-0" />
+                  <div className="relative p-5">
+                    <h3 className="text-[0.8125rem] font-semibold tracking-[0.14em] text-white uppercase">
+                      {tile.city}
+                    </h3>
+                    <p className="mt-1 text-xs text-white/75">{tile.area}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </Container>
       </Section>
 
       {/* ======================= FEATURED PROPERTIES ====================== */}
       <Section tone="sand">
         <Container>
           <SectionHeading
-            eyebrow="Our portfolio"
+            eyebrow="Available now"
             title={
               <>
                 Homes and investments
@@ -367,6 +532,7 @@ export default async function HomePage() {
               <p className="text-sm font-semibold tracking-wide text-gold-300">Martin Doyle</p>
               <p className="mt-1 text-[0.8125rem] text-white/50">Portfolio landlord · Farnworth &amp; Little Lever</p>
             </footer>
+            <TrustpilotWidget variant="mini" theme="dark" className="mx-auto mt-10 max-w-[18rem]" />
           </div>
         </Container>
       </section>
@@ -431,6 +597,11 @@ export default async function HomePage() {
           </Container>
         </Section>
       )}
+
+      {/*
+        The sample's closing "Your Property. Our Priority." band is already
+        served site-wide by the footer CTA, so it is not repeated here.
+      */}
     </>
   );
 }
