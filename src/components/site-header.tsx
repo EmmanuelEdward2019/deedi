@@ -59,7 +59,7 @@ export function SiteHeader() {
 
       <header
         className={cx(
-          "sticky top-0 z-50 border-b border-sand-200 bg-white/95 backdrop-blur-md transition-shadow duration-500",
+          "sticky top-0 z-50 border-b border-white/10 bg-royal-700/95 backdrop-blur-md transition-shadow duration-500",
           scrolled ? "shadow-md" : "shadow-sm",
         )}
       >
@@ -85,14 +85,13 @@ export function SiteHeader() {
                   href={item.href}
                   className={cx(
                     "relative py-1 text-[0.8125rem] font-medium tracking-[0.13em] uppercase transition-colors",
-                    "text-navy-800 hover:text-gold-600",
-                    active && "text-gold-600",
+                    active ? "text-gold-300" : "text-white hover:text-gold-300",
                   )}
                 >
                   {item.label}
                   <span
                     className={cx(
-                      "absolute -bottom-0.5 left-0 h-px bg-gold-500 transition-all duration-300",
+                      "absolute -bottom-0.5 left-0 h-px bg-gold-300 transition-all duration-300",
                       active ? "w-full" : "w-0",
                     )}
                   />
@@ -104,7 +103,7 @@ export function SiteHeader() {
           <div className="hidden items-center gap-3 lg:flex">
             <Link
               href="/contact"
-              className="bg-gold-500 px-6 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.13em] text-white transition-colors hover:bg-gold-600"
+              className="bg-gold-400 px-6 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.13em] text-navy-950 transition-colors hover:bg-gold-300"
             >
               Book a valuation
             </Link>
@@ -115,7 +114,7 @@ export function SiteHeader() {
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="relative z-10 -mr-2 p-2 text-navy-900 lg:hidden"
+            className="relative z-10 -mr-2 p-2 text-white lg:hidden"
           >
             <Menu className="size-6" />
           </button>

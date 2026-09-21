@@ -211,9 +211,12 @@ export default async function HomePage() {
           sizes="100vw"
           className="object-cover object-[80%_center] lg:object-center"
         />
-        {/* Lighter than a full scrim so the sunset keeps its colour. */}
-        <div className="absolute inset-0 bg-navy-950/45 lg:bg-transparent lg:bg-gradient-to-b lg:from-navy-950/25 lg:via-navy-950/5 lg:to-navy-950/35" />
-        <div className="absolute inset-0 hidden bg-[radial-gradient(ellipse_40%_62%_at_center,rgb(5_13_31/0.5),transparent)] lg:block" />
+        {/*
+          Dimmed most where the type sits and least at the edges, so the copy
+          reads clearly while both skylines keep their sunset colour.
+        */}
+        <div className="absolute inset-0 bg-navy-950/55 lg:bg-transparent lg:bg-gradient-to-b lg:from-navy-950/40 lg:via-navy-950/25 lg:to-navy-950/50" />
+        <div className="absolute inset-0 hidden bg-[radial-gradient(ellipse_46%_70%_at_center,rgb(5_13_31/0.62),transparent)] lg:block" />
 
         {/*
           Short on desktop so both skylines stay in frame, as in the sample;
@@ -226,12 +229,12 @@ export default async function HomePage() {
             <span className="text-gold-500/60">|</span> England
           </Eyebrow>
 
-          <h1 className="font-display mt-5 max-w-4xl text-[2.5rem] leading-[1.08] font-medium tracking-[-0.02em] text-white balance [text-shadow:0_2px_24px_rgb(5_13_31/0.45)] sm:text-6xl">
+          <h1 className="font-display mt-5 max-w-4xl text-[2.5rem] leading-[1.08] font-medium tracking-[-0.02em] text-white balance [text-shadow:0_2px_24px_rgb(5_13_31/0.55)] sm:text-6xl">
             Property and Investment
             <span className="block">Management Portfolio</span>
           </h1>
 
-          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.6875rem] font-semibold tracking-[0.2em] text-white/90 uppercase sm:text-xs">
+          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[0.6875rem] font-semibold tracking-[0.2em] text-white uppercase [text-shadow:0_1px_10px_rgb(5_13_31/0.7)] sm:text-xs">
             {HERO_STRANDS.map((strand, index) => (
               <li key={strand} className="flex items-center gap-4">
                 {/* Separator only once the strands sit on one line. */}
@@ -241,7 +244,7 @@ export default async function HomePage() {
             ))}
           </ul>
 
-          <p className="mt-6 max-w-xl text-[0.9375rem] leading-relaxed text-white/80 pretty sm:text-base">
+          <p className="mt-6 max-w-xl text-[0.9375rem] leading-relaxed text-white/95 pretty [text-shadow:0_1px_12px_rgb(5_13_31/0.75)] sm:text-base">
             Premium property management and investment opportunities in Manchester and
             Liverpool — alongside original art for the spaces people live and work in.
           </p>
