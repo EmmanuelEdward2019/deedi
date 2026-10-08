@@ -86,7 +86,7 @@ const organisationSchema = {
   "@type": "RealEstateAgent",
   name: site.legalName,
   url: site.url,
-  logo: `${site.url}/images/brand/deedi-logo.png`,
+  logo: `${site.url}/images/brand/deedi-emblem.png`,
   image: `${site.url}/images/properties/bolton-aerial.jpeg`,
   description: site.description,
   telephone: site.contact.phone,

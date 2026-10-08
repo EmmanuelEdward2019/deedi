@@ -27,12 +27,12 @@ export default async function LoginPage({ searchParams }: { searchParams: Search
         <div className="w-full max-w-sm">
           <Link href="/" className="inline-block">
             <Image
-              src="/images/brand/deedi-logo.png"
+              src="/images/brand/deedi-emblem.png"
               alt={site.name}
-              width={2125}
-              height={740}
+              width={522}
+              height={600}
               priority
-              className="h-9 w-auto"
+              className="h-16 w-auto"
             />
           </Link>
 

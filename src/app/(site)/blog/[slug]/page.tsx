@@ -82,7 +82,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     publisher: {
       "@type": "Organization",
       name: site.legalName,
-      logo: { "@type": "ImageObject", url: `${site.url}/images/brand/deedi-logo.png` },
+      logo: { "@type": "ImageObject", url: `${site.url}/images/brand/deedi-emblem.png` },
     },
   };
 

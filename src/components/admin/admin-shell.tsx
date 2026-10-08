@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -22,6 +21,7 @@ import {
   Users,
 } from "@/components/icons";
 import { cx } from "@/components/ui";
+import { BrandLogo } from "@/components/brand-logo";
 
 const LINKS = [
   { href: "/admin", label: "Overview", Icon: Dashboard, exact: true },
@@ -85,13 +85,7 @@ export function AdminShell({
       <aside className="surface-navy fixed inset-y-0 left-0 z-40 hidden w-64 flex-col lg:flex">
         <div className="border-b border-white/10 px-6 py-6">
           <Link href="/">
-            <Image
-              src="/images/brand/deedi-logo.png"
-              alt="Deedi Ltd"
-              width={2125}
-              height={740}
-              className="h-7 w-auto"
-            />
+            <BrandLogo emblemClassName="h-10 w-auto" wordmarkClassName="h-6 w-auto" />
           </Link>
           <p className="mt-3 text-[0.625rem] tracking-[0.18em] text-white/35 uppercase">
             Administration
@@ -149,13 +143,7 @@ export function AdminShell({
       {/* Top bar — mobile */}
       <header className="surface-navy sticky top-0 z-40 flex items-center justify-between px-4 py-3 lg:hidden">
         <Link href="/admin">
-          <Image
-            src="/images/brand/deedi-logo.png"
-            alt="Deedi Ltd"
-            width={2125}
-            height={740}
-            className="h-6 w-auto"
-          />
+          <BrandLogo emblemClassName="h-9 w-auto" wordmarkClassName="h-5 w-auto" />
         </Link>
         <button
           type="button"

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { footerNav, site, whatsappLink } from "@/lib/site";
 import { NewsletterForm } from "@/components/newsletter-form";
@@ -15,6 +14,7 @@ import {
   XSocial,
 } from "@/components/icons";
 import { GoldRule } from "@/components/ui";
+import { BrandLogo } from "@/components/brand-logo";
 
 const socials = [
   { href: site.social.instagram, label: "Instagram", Icon: Instagram },
@@ -61,12 +61,11 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Brand + contact */}
           <div className="lg:col-span-4">
-            <Image
-              src="/images/brand/deedi-logo.png"
-              alt={site.name}
-              width={2125}
-              height={740}
-              className="h-9 w-auto"
+            <BrandLogo
+              statement
+              className="gap-3.5"
+              emblemClassName="h-20 w-auto"
+              wordmarkClassName="h-12 w-auto"
             />
             <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">{site.description}</p>
 

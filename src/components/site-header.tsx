@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { nav, site, whatsappLink } from "@/lib/site";
 import { Close, Menu, Phone, WhatsApp } from "@/components/icons";
 import { cx } from "@/components/ui";
+import { BrandLogo } from "@/components/brand-logo";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -63,16 +63,9 @@ export function SiteHeader() {
           scrolled ? "shadow-md" : "shadow-sm",
         )}
       >
-        <div className="relative mx-auto flex max-w-[1560px] items-center justify-between gap-6 px-4 py-4 sm:px-6 lg:px-8">
+        <div className="relative mx-auto flex max-w-[1560px] items-center justify-between gap-6 px-4 py-3 sm:px-6 lg:px-8">
           <Link href="/" className="relative z-10 flex shrink-0 items-center" aria-label={`${site.name} home`}>
-            <Image
-              src="/images/brand/deedi-logo.png"
-              alt={site.name}
-              width={2125}
-              height={740}
-              priority
-              className="h-8 w-auto sm:h-9"
-            />
+            <BrandLogo priority />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">
@@ -144,12 +137,10 @@ export function SiteHeader() {
           )}
         >
           <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
-            <Image
-              src="/images/brand/deedi-logo.png"
-              alt={site.name}
-              width={2125}
-              height={740}
-              className="h-7 w-auto"
+            <BrandLogo
+              statement
+              emblemClassName="h-12 w-auto"
+              wordmarkClassName="h-7 w-auto"
             />
             <button type="button" onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 text-white">
               <Close className="size-6" />

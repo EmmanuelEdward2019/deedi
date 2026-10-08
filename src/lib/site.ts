@@ -28,6 +28,7 @@ export const site = {
   name: "Deedi Ltd",
   legalName: "Deedi Limited",
   tagline: "Property. Art. Lasting Value.",
+  statement: "Guaranteed Customer Satisfaction",
   description:
     "Deedi Ltd manages, lets and sells residential property across Greater Manchester and the North West, and curates original art for the spaces people live and work in.",
   url: siteUrl(),
@@ -35,12 +36,12 @@ export const site = {
   currency: "GBP",
 
   contact: {
-    phone: "+44 1204 900 200",
-    phoneHref: "tel:+441204900200",
-    whatsapp: "447440000000", // digits only, international format
+    phone: "+44 7470 558722",
+    phoneHref: "tel:+447470558722",
+    whatsapp: "447470558722", // digits only, international format
     whatsappMessage: "Hello Deedi Ltd, I'd like to enquire about",
-    email: "hello@deedi.co.uk",
-    salesEmail: "sales@deedi.co.uk",
+    email: "Deediltd@gmail.com",
+    salesEmail: "Deediltd@gmail.com",
     address: {
       street: "Churchgate House, Knowsley Street",
       city: "Bolton",
