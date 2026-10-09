@@ -42,6 +42,7 @@ export const site = {
     whatsappMessage: "Hello Deedi Ltd, I'd like to enquire about",
     email: "Deediltd@gmail.com",
     salesEmail: "Deediltd@gmail.com",
+    infoEmail: "info@deedi.co.uk",
     address: {
       street: "Churchgate House, Knowsley Street",
       city: "Bolton",

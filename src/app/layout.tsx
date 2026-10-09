@@ -90,7 +90,7 @@ const organisationSchema = {
   image: `${site.url}/images/properties/bolton-aerial.jpeg`,
   description: site.description,
   telephone: site.contact.phone,
-  email: site.contact.email,
+  email: [site.contact.email, site.contact.infoEmail],
   priceRange: "££",
   address: {
     "@type": "PostalAddress",

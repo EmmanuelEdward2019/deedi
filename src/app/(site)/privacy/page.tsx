@@ -35,7 +35,8 @@ export default function PrivacyPage() {
               {site.legalName} is the data controller for the personal data described in this
               policy. You can reach us at {site.contact.address.street},{" "}
               {site.contact.address.city} {site.contact.address.postcode}, by telephone on{" "}
-              {site.contact.phone}, or by email at <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
+              {site.contact.phone}, or by email at <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> or{" "}
+              <a href={`mailto:${site.contact.infoEmail}`}>{site.contact.infoEmail}</a>.
             </p>
 
             <h2>What we collect</h2>

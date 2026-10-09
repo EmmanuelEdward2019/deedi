@@ -35,7 +35,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Sear
       "@type": "Organization",
       name: site.legalName,
       telephone: site.contact.phone,
-      email: site.contact.email,
+      email: [site.contact.email, site.contact.infoEmail],
       address: {
         "@type": "PostalAddress",
         streetAddress: site.contact.address.street,
@@ -70,6 +70,13 @@ export default async function ContactPage({ searchParams }: { searchParams: Sear
       href: `mailto:${site.contact.email}`,
       note: "We reply within one working day",
     },
+    {
+      Icon: Mail,
+      label: "General enquiries",
+      value: site.contact.infoEmail,
+      href: `mailto:${site.contact.infoEmail}`,
+      note: "We reply within one working day",
+    },
   ];
 
   return (
@@ -94,7 +101,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Sear
       {/* Channels */}
       <section className="border-b border-sand-200 bg-white">
         <Container>
-          <div className="grid gap-px bg-sand-200 md:grid-cols-3">
+          <div className="grid gap-px bg-sand-200 md:grid-cols-2 xl:grid-cols-4">
             {channels.map(({ Icon, label, value, href, note, external }) => (
               <a
                 key={label}
@@ -104,7 +111,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Sear
               >
                 <Icon className="size-6 text-gold-500" strokeWidth={1.2} />
                 <p className="eyebrow mt-5 text-slate-400">{label}</p>
-                <p className="font-display mt-2 text-xl text-navy-900 transition-colors group-hover:text-gold-600">
+                <p className="font-display mt-2 text-xl break-words text-navy-900 transition-colors group-hover:text-gold-600">
                   {value}
                 </p>
                 <p className="mt-1.5 text-sm text-slate-500">{note}</p>
